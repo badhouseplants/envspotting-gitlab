@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 
+	grpcusers "github.com/badhouseplants/envspotting-gitlab/internal/grpc-users"
 	environments "github.com/badhouseplants/envspotting-gitlab/service/environments"
 	projects "github.com/badhouseplants/envspotting-gitlab/service/projects"
 	"github.com/badhouseplants/envspotting-gitlab/tools/logger"
@@ -19,11 +20,17 @@ import (
 
 var (
 	host string
-	log  = logger.GetSimpleLogger()
+	log  = logger.GetServerLogger()
 )
 
+func init() {
+	viper.SetDefault("envspotting_gitlab_host", "0.0.0.0")
+	viper.SetDefault("envspotting_gitlab_port", "9090")
+	viper.AutomaticEnv() // read in environment variables that match)
+}
+
 func getHost() string {
-	host = fmt.Sprintf("%s:%s", viper.GetString("app_host"), viper.GetString("app_port"))
+	host = fmt.Sprintf("%s:%s", viper.GetString("envspotting_gitlab_host"), viper.GetString("envspotting_gitlab_port"))
 	return host
 }
 
@@ -48,7 +55,6 @@ func setupGrpcStreamOpts() grpc.ServerOption {
 	)
 }
 
-
 func main() {
 	setDefaultVars()
 	// seting up grpc server
@@ -56,6 +62,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	grpcusers.Connect()
 	grpcServer := grpc.NewServer(
 		setupGrpcStreamOpts(),
 		setupGrpcUnaryOpts(),

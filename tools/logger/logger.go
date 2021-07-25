@@ -36,14 +36,14 @@ func GetGrpcLogger(ctx context.Context) *logrus.Entry {
 	return ctxlogrus.Extract(ctx)
 }
 
-func SetSimpleLogger() {
+func SetServerLogger() {
 	logrusLogger.Formatter = &logrus.JSONFormatter{}
 	logger = logrus.NewEntry(logrusLogger)
 }
 
-func GetSimpleLogger() *logrus.Entry {
+func GetServerLogger() *logrus.Entry {
 	if logger == nil {
-		SetSimpleLogger()
+		SetServerLogger()
 	}
 	return logger
 }

@@ -3,16 +3,22 @@ package service
 import (
 	context "context"
 
-	as "github.com/allanger/gitlab-environment-aggregator/service/users/accounts"
 	g "github.com/allanger/gitlab-environment-aggregator/third_party/gitlab"
+	commonserv "github.com/badhouseplants/envspotting-gitlab/service"
+
 	"github.com/allanger/gitlab-environment-aggregator/tools/logger"
-	"github.com/badhouseplants/envspotting-gitlab/models/external/gitlab/environments"
+	"github.com/badhouseplants/envspotting-go-proto/models/external/gitlab/environments"
 	"github.com/xanzy/go-gitlab"
 )
 
 func (s *serviceGrpcImpl) Get(ctx context.Context, in *environments.EnvironmentID) (*environments.EnvironmentInfo, error) {
 	log := logger.GetGrpcLogger(ctx)
-	token, err := as.GetGitlabTokenByID(ctx)
+
+	token, err := commonserv.GetGitlabToken(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	git, err := g.Client(token)
 	if err != nil {
 		log.Error(err)
@@ -40,7 +46,12 @@ func (s *serviceGrpcImpl) Get(ctx context.Context, in *environments.EnvironmentI
 
 func (s *serviceGrpcImpl) List(in *environments.EnvironmentName, stream environments.Environments_ListServer) error {
 	log := logger.GetGrpcLogger(stream.Context())
-	token, err := as.GetGitlabTokenByID(stream.Context())
+
+	token, err := commonserv.GetGitlabToken(stream.Context())
+	if err != nil {
+		return err
+	}
+
 	git, err := g.Client(token)
 	if err != nil {
 		log.Error(err)

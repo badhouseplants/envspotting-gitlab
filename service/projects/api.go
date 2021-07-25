@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/badhouseplants/envspotting-gitlab/models/external/gitlab/projects"
+	"github.com/badhouseplants/envspotting-go-proto/models/external/gitlab/projects"
 	"google.golang.org/grpc"
 )
 
