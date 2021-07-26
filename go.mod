@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/allanger/gitlab-environment-aggregator v0.1.3
-	github.com/badhouseplants/envspotting-go-proto v0.0.4-dev14
+	github.com/badhouseplants/envspotting-go-proto v1.0.0-dev
 	github.com/go-redis/redis/v8 v8.11.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/sirupsen/logrus v1.8.1

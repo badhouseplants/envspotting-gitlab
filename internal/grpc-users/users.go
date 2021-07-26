@@ -21,9 +21,9 @@ var (
 	AccountClient accounts.AccountsClient
 	RightsClient rights.RightsClient
 	AuthorizationClient authorization.AuthorizationClient
+	TokenClient accounts.TokensClient
 )
 
-// var Client *
 func Connect() {
 	log := logger.GetServerLogger()
 	// Set up a connection to the server.
@@ -37,8 +37,8 @@ func Connect() {
 		log.Error("did not connect: %v", err)
 	}
 	AccountClient = accounts.NewAccountsClient(conn)
-	RightsClient = rights.NewRightsClient(conn)
 	AuthorizationClient = authorization.NewAuthorizationClient(conn)
+	TokenClient = accounts.NewTokensClient(conn)
 }
 
 func getHost() string {

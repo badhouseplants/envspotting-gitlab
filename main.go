@@ -56,7 +56,6 @@ func setupGrpcStreamOpts() grpc.ServerOption {
 }
 
 func main() {
-	setDefaultVars()
 	// seting up grpc server
 	listener, err := net.Listen("tcp", getHost())
 	if err != nil {
@@ -70,11 +69,4 @@ func main() {
 	registerServices(grpcServer)
 	log.Infof("starting to serve on %s", getHost())
 	grpcServer.Serve(listener)
-}
-
-// set defaults values for viper variables
-func setDefaultVars() {
-	// app variables
-	viper.SetDefault("app_host", "0.0.0.0")
-	viper.SetDefault("app_port", "9090")
 }
