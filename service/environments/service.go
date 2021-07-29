@@ -29,17 +29,21 @@ func (s *serviceGrpcImpl) Get(ctx context.Context, in *environments.EnvironmentI
 		log.Error(err)
 	}
 	envOut := &environments.EnvironmentInfo{
-		Id:        int64(env.ID),
-		Name:      env.Name,
-		State:     env.State,
-		Url:       env.ExternalURL,
-		Ref:       env.LastDeployment.Ref,
-		Sha:       env.LastDeployment.SHA,
-		CiStatus:  env.LastDeployment.Status,
-		CiId:      int64(env.LastDeployment.ID),
-		UserId:    int64(env.LastDeployment.User.ID),
-		UserName:  env.LastDeployment.User.Name,
-		UpdatedAt: env.LastDeployment.UpdatedAt.String(),
+		Id:    int64(env.ID),
+		Name:  env.Name,
+		State: env.State,
+		Url:   env.ExternalURL,
+	}
+	if env.LastDeployment != nil {
+		envOut = &environments.EnvironmentInfo{
+			Ref:       env.LastDeployment.Ref,
+			Sha:       env.LastDeployment.SHA,
+			CiStatus:  env.LastDeployment.Status,
+			CiId:      int64(env.LastDeployment.ID),
+			UserId:    int64(env.LastDeployment.User.ID),
+			UserName:  env.LastDeployment.User.Name,
+			UpdatedAt: env.LastDeployment.UpdatedAt.String(),
+		}
 	}
 	return envOut, nil
 }
